@@ -280,8 +280,11 @@ export default {
       // Aktualisiere die ursprünglichen Daten, damit hasChanges false wird
       this.originalData = { ...this.editData }
 
-      // Zurück zur Detailseite
-      this.$router.push(`/employees/${this.employee.Personalnummer}`)
+      // Zurück zur Detailseite mit Toast-Trigger
+      this.$router.push({
+        path: `/employees/${this.employee.Personalnummer}`,
+        query: { saved: 'true' }
+      })
     },
     validateForm() {
       // Basis-Validierung für Pflichtfelder

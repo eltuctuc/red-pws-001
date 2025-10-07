@@ -197,21 +197,29 @@
         </div>
       </section>
     </div>
+
+    <!-- Toast Notification -->
+    <ToastNotification :show="showToast" :title="toastTitle" :message="toastMessage" @close="showToast = false" />
   </div>
 </template>
 
 <script>
 import ObjectHeader from '@/components/ObjectHeader.vue';
+import ToastNotification from '@/components/ToastNotification.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'EmployeeDetailView',
   components: {
-    ObjectHeader
+    ObjectHeader,
+    ToastNotification
   },
   data() {
     return {
-      employee: null
+      employee: null,
+      showToast: false,
+      toastTitle: 'Erfolgreich gespeichert',
+      toastMessage: 'Die Änderungen wurden erfolgreich gespeichert.'
     }
   },
   computed: {
@@ -219,16 +227,29 @@ export default {
   },
   created() {
     this.loadEmployee()
+    this.checkForSavedMessage()
   },
   watch: {
     '$route'() {
       this.loadEmployee()
+      this.checkForSavedMessage()
     }
   },
   methods: {
     loadEmployee() {
       const employeeNumber = this.$route.params.id
       this.employee = this.getAllEmployees.find(emp => emp.Personalnummer === employeeNumber)
+    },
+    checkForSavedMessage() {
+      // Prüfe, ob die URL einen "saved" Query Parameter hat
+      if (this.$route.query.saved === 'true') {
+        this.showToast = true
+        // Entferne den Query Parameter aus der URL ohne Navigation auszulösen
+        this.$router.replace({
+          name: this.$route.name,
+          params: this.$route.params
+        })
+      }
     },
     scrollToSection(sectionId) {
       const element = document.getElementById(sectionId)

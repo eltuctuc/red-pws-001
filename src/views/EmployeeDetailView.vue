@@ -56,10 +56,16 @@
     <div v-if="employee" class="content-sections">
       <!-- Persönliche Daten -->
       <section id="personal" class="data-section">
-        <h2 class="section-title">
-          <span class="material-icons-outlined">person</span>
-          Persönliche Daten
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="material-icons-outlined">person</span>
+            Persönliche Daten
+          </h2>
+          <button @click="editSection('personal')" class="edit-button">
+            <span class="material-icons-outlined">edit</span>
+            Bearbeiten
+          </button>
+        </div>
         <div class="section-content">
           <div class="data-grid">
             <div class="data-item">
@@ -96,10 +102,16 @@
 
       <!-- Beschäftigung -->
       <section id="employment" class="data-section">
-        <h2 class="section-title">
-          <span class="material-icons-outlined">work</span>
-          Beschäftigung
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="material-icons-outlined">work</span>
+            Beschäftigung
+          </h2>
+          <button @click="editSection('employment')" class="edit-button">
+            <span class="material-icons-outlined">edit</span>
+            Bearbeiten
+          </button>
+        </div>
         <div class="section-content">
           <div class="data-grid">
             <div class="data-item">
@@ -134,10 +146,16 @@
 
       <!-- Kontakt & Wohnort -->
       <section id="contact" class="data-section">
-        <h2 class="section-title">
-          <span class="material-icons-outlined">contact_mail</span>
-          Kontakt & Wohnort
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="material-icons-outlined">contact_mail</span>
+            Kontakt & Wohnort
+          </h2>
+          <button @click="editSection('contact')" class="edit-button">
+            <span class="material-icons-outlined">edit</span>
+            Bearbeiten
+          </button>
+        </div>
         <div class="section-content">
           <div class="data-grid">
             <div class="data-item full-width">
@@ -151,10 +169,16 @@
 
       <!-- Status & Fehlzeiten -->
       <section id="status" class="data-section">
-        <h2 class="section-title">
-          <span class="material-icons-outlined">info</span>
-          Status & Fehlzeiten
-        </h2>
+        <div class="section-header">
+          <h2 class="section-title">
+            <span class="material-icons-outlined">info</span>
+            Status & Fehlzeiten
+          </h2>
+          <button @click="editSection('status')" class="edit-button">
+            <span class="material-icons-outlined">edit</span>
+            Bearbeiten
+          </button>
+        </div>
         <div class="section-content">
           <div class="data-grid">
             <div class="data-item">
@@ -220,6 +244,11 @@ export default {
           behavior: 'smooth'
         })
       }
+    },
+    editSection(sectionName) {
+      // Hier kann später die Bearbeitungslogik implementiert werden
+      console.log(`Bearbeiten der Sektion: ${sectionName}`)
+      // Beispiel: Modal öffnen, zu Bearbeitungsseite navigieren, etc.
     },
     formatDate(dateString) {
       if (!dateString) return '-'
@@ -310,7 +339,7 @@ export default {
 .anchor-navigation {
   background: white;
   border-bottom: 1px solid #e2e8f0;
-  padding: 16px 32px;
+  padding: 8px 32px;
   flex-shrink: 0;
   z-index: 99;
 }
@@ -321,29 +350,27 @@ export default {
 }
 
 .anchor-title {
-  margin: 0 0 12px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #374151;
+  display: none;
+  /* Verstecke den Titel für mehr Platz */
 }
 
 .anchor-links {
   display: flex;
-  gap: 24px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .anchor-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
+  gap: 6px;
+  padding: 6px 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #64748b;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -354,11 +381,11 @@ export default {
   color: white;
   border-color: #1976d2;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.2);
+  box-shadow: 0 2px 4px rgba(25, 118, 210, 0.2);
 }
 
 .anchor-link .material-icons-outlined {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 /* Scrollable Content */
@@ -376,14 +403,20 @@ export default {
   overflow: hidden;
 }
 
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
 .section-title {
   display: flex;
   align-items: center;
   gap: 12px;
   margin: 0;
-  padding: 20px 24px;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-bottom: 1px solid #e2e8f0;
   font-size: 20px;
   font-weight: 600;
   color: #1e293b;
@@ -392,6 +425,35 @@ export default {
 .section-title .material-icons-outlined {
   font-size: 24px;
   color: #1976d2;
+}
+
+.edit-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.edit-button:hover {
+  background: #1565c0;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.3);
+}
+
+.edit-button:active {
+  transform: translateY(0);
+}
+
+.edit-button .material-icons-outlined {
+  font-size: 18px;
 }
 
 .section-content {
@@ -473,13 +535,23 @@ export default {
     padding-right: 16px;
   }
 
+  .anchor-navigation {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
   .anchor-links {
-    gap: 12px;
+    gap: 8px;
   }
 
   .anchor-link {
-    font-size: 13px;
-    padding: 6px 12px;
+    font-size: 12px;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+
+  .anchor-link .material-icons-outlined {
+    font-size: 14px;
   }
 
   .data-grid {
@@ -491,9 +563,25 @@ export default {
     padding: 16px;
   }
 
-  .section-title {
+  .section-header {
     padding: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .section-title {
     font-size: 18px;
+  }
+
+  .edit-button {
+    align-self: flex-end;
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .edit-button .material-icons-outlined {
+    font-size: 16px;
   }
 }
 </style>

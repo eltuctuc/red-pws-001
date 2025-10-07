@@ -48,27 +48,15 @@ export default {
 
 <style scoped>
 .object-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 24px 32px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  padding: 16px 32px;
   position: relative;
-  overflow: hidden;
-}
-
-.object-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.1);
-  z-index: 1;
+  border-radius: 0 0 8px 8px;
 }
 
 .header-content {
-  position: relative;
-  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,25 +71,23 @@ export default {
 .full-name {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0 0 8px 0;
-  font-size: 32px;
+  gap: 8px;
+  margin: 0 0 4px 0;
+  font-size: 20px;
   font-weight: 600;
-  color: white;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #1e293b;
 }
 
 .person-icon {
-  font-size: 36px;
-  opacity: 0.9;
+  font-size: 22px;
+  color: #64748b;
 }
 
 .employee-number {
   margin: 0;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 400;
-  opacity: 0.9;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  color: #64748b;
 }
 
 .status-info {
@@ -110,51 +96,50 @@ export default {
 }
 
 .status-badge {
-  padding: 8px 16px;
-  border-radius: 25px;
-  font-size: 14px;
-  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   display: inline-block;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
+  border: 1px solid transparent;
 }
 
 .status-badge.aktiv {
-  background: rgba(34, 197, 94, 0.2);
-  color: #dcfce7;
-  border-color: rgba(34, 197, 94, 0.5);
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
 }
 
 .status-badge.inaktiv {
-  background: rgba(239, 68, 68, 0.2);
-  color: #fecaca;
-  border-color: rgba(239, 68, 68, 0.5);
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fecaca;
 }
 
 @media (max-width: 768px) {
   .object-header {
-    padding: 20px 16px;
+    padding: 12px 16px;
   }
 
   .header-content {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
-  }
-
-  .full-name {
-    font-size: 24px;
     gap: 8px;
   }
 
+  .full-name {
+    font-size: 18px;
+    gap: 6px;
+  }
+
   .person-icon {
-    font-size: 28px;
+    font-size: 20px;
   }
 
   .employee-number {
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .status-info {

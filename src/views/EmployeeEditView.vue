@@ -176,31 +176,51 @@
         </div>
       </div>
     </div>
+
+    <!-- Confirm Modal -->
+    <ConfirmModal :isVisible="showConfirmModal" @confirm="confirmLeave" @cancel="cancelLeave" />
   </div>
 </template>
 
 <script>
+import ConfirmModal from '@/components/ConfirmModal.vue';
 import ObjectHeader from '@/components/ObjectHeader.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'EmployeeEditView',
   components: {
-    ObjectHeader
+    ObjectHeader,
+    ConfirmModal
   },
   data() {
     return {
       employee: null,
       editData: {},
-      section: null
+      originalData: {},
+      section: null,
+      showConfirmModal: false,
+      pendingNavigation: null
     }
   },
   computed: {
-    ...mapGetters(['getAllEmployees'])
+    ...mapGetters(['getAllEmployees']),
+    hasChanges() {
+      if (!this.originalData || !this.editData) return false
+
+      return JSON.stringify(this.originalData) !== JSON.stringify(this.editData)
+    }
   },
   created() {
     this.loadEmployee()
     this.section = this.$route.params.section
+  },
+  mounted() {
+    // Verhindere das Schließen der Seite bei ungespeicherten Änderungen
+    window.addEventListener('beforeunload', this.handleBeforeUnload)
+  },
+  beforeUnmount() {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload)
   },
   watch: {
     '$route'() {
@@ -216,6 +236,8 @@ export default {
       if (this.employee) {
         // Erstelle eine Kopie der Mitarbeiterdaten zum Bearbeiten
         this.editData = { ...this.employee }
+        // Speichere originale Daten für Vergleich
+        this.originalData = { ...this.employee }
       }
     },
     getSectionIcon(section) {
@@ -237,8 +259,14 @@ export default {
       return titles[section] || 'Daten'
     },
     cancelEdit() {
-      // Zurück zur Detailseite ohne Speichern
-      this.$router.push(`/employees/${this.employee.Personalnummer}`)
+      if (this.hasChanges) {
+        this.pendingNavigation = () => {
+          this.$router.push(`/employees/${this.employee.Personalnummer}`)
+        }
+        this.showConfirmModal = true
+      } else {
+        this.$router.push(`/employees/${this.employee.Personalnummer}`)
+      }
     },
     saveChanges() {
       // Validierung
@@ -248,6 +276,9 @@ export default {
 
       // Speichere Änderungen im Vuex Store (und damit in localStorage)
       this.$store.dispatch('updateEmployee', this.editData)
+
+      // Aktualisiere die ursprünglichen Daten, damit hasChanges false wird
+      this.originalData = { ...this.editData }
 
       // Zurück zur Detailseite
       this.$router.push(`/employees/${this.employee.Personalnummer}`)
@@ -271,6 +302,37 @@ export default {
       }
 
       return true
+    },
+    confirmLeave() {
+      this.showConfirmModal = false
+
+      // Setze die Änderungen zurück, damit hasChanges false wird
+      this.editData = { ...this.originalData }
+
+      // Führe die ausstehende Navigation aus
+      if (this.pendingNavigation) {
+        this.pendingNavigation()
+        this.pendingNavigation = null
+      }
+    },
+    cancelLeave() {
+      this.showConfirmModal = false
+      this.pendingNavigation = null
+    },
+    handleBeforeUnload(event) {
+      if (this.hasChanges) {
+        event.preventDefault()
+        event.returnValue = 'Sie haben ungespeicherte Änderungen. Möchten Sie die Seite wirklich verlassen?'
+        return event.returnValue
+      }
+    }
+  },
+  beforeRouteLeave(to, from, next) {
+    if (this.hasChanges) {
+      this.pendingNavigation = () => next()
+      this.showConfirmModal = true
+    } else {
+      next()
     }
   }
 }

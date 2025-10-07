@@ -7,6 +7,12 @@
         </span>
       </router-link>
 
+      <router-link to="/employees" class="nav-item" title="Personenübersicht">
+        <span class="material-icons-outlined">
+          people
+        </span>
+      </router-link>
+
       <router-link to="/about" class="nav-item" title="About">
         <span class="material-icons-outlined">
           info

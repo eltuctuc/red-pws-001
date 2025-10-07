@@ -246,9 +246,8 @@ export default {
       }
     },
     editSection(sectionName) {
-      // Hier kann später die Bearbeitungslogik implementiert werden
-      console.log(`Bearbeiten der Sektion: ${sectionName}`)
-      // Beispiel: Modal öffnen, zu Bearbeitungsseite navigieren, etc.
+      // Navigiere zur Bearbeitungsseite
+      this.$router.push(`/employees/${this.employee.Personalnummer}/edit/${sectionName}`)
     },
     formatDate(dateString) {
       if (!dateString) return '-'

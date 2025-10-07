@@ -80,7 +80,8 @@
               </tr>
             </thead>
             <tbody class="table-body">
-              <tr v-for="employee in filteredEmployees" :key="employee.Personalnummer" class="table-row">
+              <tr v-for="employee in filteredEmployees" :key="employee.Personalnummer" class="table-row clickable-row"
+                @click="goToEmployeeDetail(employee.Personalnummer)">
                 <td class="cell col-personalnummer sticky-col">{{ employee.Personalnummer }}</td>
                 <td class="cell col-vorname">{{ employee.Vorname }}</td>
                 <td class="cell col-nachname">{{ employee.Nachname }}</td>
@@ -158,6 +159,11 @@ export default {
       }
 
       return employees
+    }
+  },
+  methods: {
+    goToEmployeeDetail(employeeNumber) {
+      this.$router.push(`/employees/${employeeNumber}`)
     }
   }
 }
@@ -377,11 +383,21 @@ export default {
 
 .table-body .table-row {
   border-bottom: 1px solid #f1f5f9;
-  transition: background-color 0.15s ease;
+  transition: all 0.15s ease;
+}
+
+.table-body .table-row.clickable-row {
+  cursor: pointer;
 }
 
 .table-body .table-row:hover {
   background-color: #f8fafc;
+}
+
+.table-body .table-row.clickable-row:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table-body .table-row:last-child {
